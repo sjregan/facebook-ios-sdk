@@ -173,7 +173,7 @@ typedef NS_OPTIONS(NSUInteger, FBSDKServerConfigurationManagerAppEventsFeatures)
   NSString *loginTooltipText = [FBSDKTypeUtility stringValue:resultDictionary[FBSDK_SERVER_CONFIGURATION_LOGIN_TOOLTIP_TEXT_FIELD]];
   NSString *defaultShareMode = [FBSDKTypeUtility stringValue:resultDictionary[FBSDK_SERVER_CONFIGURATION_DEFAULT_SHARE_MODE_FIELD]];
   BOOL implicitLoggingEnabled = [FBSDKTypeUtility boolValue:resultDictionary[FBSDK_SERVER_CONFIGURATION_IMPLICIT_LOGGING_ENABLED_FIELD]];
-  BOOL systemAuthenticationEnabled = [FBSDKTypeUtility boolValue:resultDictionary[FBSDK_SERVER_CONFIGURATION_SYSTEM_AUTHENTICATION_ENABLED_FIELD]];
+  BOOL systemAuthenticationEnabled = YES; // sjregan: [FBSDKTypeUtility boolValue:resultDictionary[FBSDK_SERVER_CONFIGURATION_SYSTEM_AUTHENTICATION_ENABLED_FIELD]];
   BOOL nativeAuthFlowEnabled =      [FBSDKTypeUtility boolValue:resultDictionary[FBSDK_SERVER_CONFIGURATION_NATIVE_PROXY_AUTH_FLOW_ENABLED_FIELD]];
   NSDictionary *dialogConfigurations = [FBSDKTypeUtility dictionaryValue:resultDictionary[FBSDK_SERVER_CONFIGURATION_DIALOG_CONFIGS_FIELD]];
   dialogConfigurations = [self _parseDialogConfigurations:dialogConfigurations];
@@ -241,13 +241,16 @@ typedef NS_OPTIONS(NSUInteger, FBSDKServerConfigurationManagerAppEventsFeatures)
   if (![_defaultServerConfiguration.appID isEqualToString:appID]) {
     // Bypass the native dialog flow for iOS 9+, as it produces a series of additional confirmation dialogs that lead to
     // extra friction that is not desirable.
-    NSOperatingSystemVersion iOS9Version = { .majorVersion = 9, .minorVersion = 0, .patchVersion = 0 };
-    BOOL useNativeFlow = ![FBSDKInternalUtility isOSRunTimeVersionAtLeast:iOS9Version];
+    //NSOperatingSystemVersion iOS9Version = { .majorVersion = 9, .minorVersion = 0, .patchVersion = 0 };
+    //BOOL useNativeFlow = ![FBSDKInternalUtility isOSRunTimeVersionAtLeast:iOS9Version];
     // Also enable SFSafariViewController by default.
+		
+		
+		
     NSDictionary *dialogFlows = @{
                                   FBSDKDialogConfigurationNameDefault: @{
-                                      FBSDKDialogConfigurationFeatureUseNativeFlow: @(useNativeFlow),
-                                      FBSDKDialogConfigurationFeatureUseSafariViewController: @YES,
+                                      FBSDKDialogConfigurationFeatureUseNativeFlow: @YES, // was useNativeFlow, sjregan
+                                      FBSDKDialogConfigurationFeatureUseSafariViewController: @NO, // was YES, sjregan
                                       },
                                   FBSDKDialogConfigurationNameMessage: @{
                                       FBSDKDialogConfigurationFeatureUseNativeFlow: @YES,
@@ -261,7 +264,7 @@ typedef NS_OPTIONS(NSUInteger, FBSDKServerConfigurationManagerAppEventsFeatures)
                                                              advertisingIDEnabled:NO
                                                            implicitLoggingEnabled:NO
                                                    implicitPurchaseLoggingEnabled:NO
-                                                      systemAuthenticationEnabled:NO
+                                                      systemAuthenticationEnabled:YES // was NO, sjregan
                                                             nativeAuthFlowEnabled:NO
                                                              dialogConfigurations:nil
                                                                       dialogFlows:dialogFlows

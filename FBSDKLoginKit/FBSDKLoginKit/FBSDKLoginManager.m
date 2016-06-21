@@ -374,11 +374,11 @@ static NSString *const FBSDKExpectedChallengeKey = @"expected_login_challenge";
     }
     case FBSDKLoginBehaviorSystemAccount: {
       [FBSDKServerConfigurationManager loadServerConfigurationWithCompletionBlock:^(FBSDKServerConfiguration *serverConfiguration, NSError *loadError) {
-        if (serverConfiguration.isSystemAuthenticationEnabled && loadError == nil) {
+        //if (serverConfiguration.isSystemAuthenticationEnabled && loadError == nil) {
           [self beginSystemLogIn];
-        } else {
-          [self logInWithBehavior:FBSDKLoginBehaviorNative];
-        }
+        //} else {
+        //  [self logInWithBehavior:FBSDKLoginBehaviorNative];
+        //}
       }];
       completion(YES, FBSDKLoginManagerLoggerAuthMethod_System, nil);
       break;
